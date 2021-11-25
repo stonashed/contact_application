@@ -4,7 +4,51 @@ import 'package:contact_application/contact_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+  final List<Map<String, String>> data = [
+    {
+      "name": "Bright Agyei",
+      "phone": "+23324856532",
+      'email': "brightkwaku52@gmail.com",
+      "country": "india",
+      "region": "Mumbai"
+    },
+    {
+      "name": "Esther yaa",
+      "phone": "+2335982454514",
+      'email': "agyei2010@gmail.com",
+      "country": "Japan",
+      "region": "Tokyo"
+    },
+    {
+      "name": "Mariama Ama",
+      "phone": "+233205878954",
+      'email': "stonenana52@gmail.com",
+      "country": "Togo",
+      "region": "Lome"
+    },
+    {
+      "name": "Kwakye Nomah",
+      "phone": "+233544145421",
+      'email': "nana2@gmail.com",
+      "country": "Ghana",
+      "region": "Eastern"
+    },
+    {
+      "name": "Dennis Opoku",
+      "phone": "+233245144244",
+      'email': "stone@gmail.com",
+      "country": "canada",
+      "region": "toronto"
+    },
+    {
+      "name": "Yaw Agyei",
+      "phone": "+23358985475",
+      'email': "stonena@gmail.com",
+      "country": "germany",
+      "region": "duseldolf"
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +61,7 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 25.0,
-                    fontWeight: FontWeight.w600)
-                    ),
+                    fontWeight: FontWeight.w600)),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 15),
@@ -111,7 +154,7 @@ class HomePage extends StatelessWidget {
                         Icons.more_horiz,
                         size: 20,
                       ),
-                    ); 
+                    );
                   },
                   separatorBuilder: (context, index) {
                     return const SizedBox(
