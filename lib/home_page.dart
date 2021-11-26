@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:html';
 
 import 'package:contact_application/contact_view.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'contact_models.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -90,7 +94,7 @@ class HomePage extends StatelessWidget {
             shrinkWrap: true,
             children: [
               const Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: EdgeInsets.only(left: 16),
                   child: Text(
                     'Recent',
                     style:
@@ -99,7 +103,21 @@ class HomePage extends StatelessWidget {
               ListView.separated(
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return const ListTile(
+                  return ListTile(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) {
+                          return ContactView(
+                              contact: Contact(
+                            name: "Agyei Francis",
+                            phone: "+2335415421541",
+                            email: "stonenana52@gmail.com",
+                            country: "Ghana",
+                            region: "Eastern Region",
+                          ));
+                        },
+                      ));
+                    },
                     leading: CircleAvatar(
                       backgroundImage: AssetImage('aaset/africa.jpg'),
                     ),
@@ -125,47 +143,55 @@ class HomePage extends StatelessWidget {
                   child: Text('Contact',
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w600))),
-              const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: Text('A',
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w600))),
-              ListView.separated(
+              GroupedListView<Map<String, String>, String>(
                   shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ContactView();
-                        }));
-                      },
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('aaset/africa.jpg'),
+                  elements: data,
+                  groupBy: (element) =>
+                      element['name'].toString().substring(0, 1),
+                  groupSeparatorBuilder: (String groupByValue) => SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            groupByValue,
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                        ),
                       ),
-                      title: Text(
-                        'Francis Agyei',
-                        style: TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.w600),
-                      ),
-                      subtitle: Text('+233 54 151 9532'),
-                      trailing: Icon(
-                        Icons.more_horiz,
-                        size: 20,
-                      ),
-                    );
+                  itemBuilder: (context, Map<String, String> element) {
+                    Contact contact = Contact.fromJson(element);
+                    return Column(children: [
+                      ListTile(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return ContactView(contact: contact);
+                            }
+                            )
+                            );
+                          },
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage('aaset/africa.jpg'),
+                          ),
+                          title: Text(
+                            '${element["name"]}',
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
+                          ),
+                          subtitle: Text('${element["phone"]}')),
+                      const Divider(),
+                    ]);
                   },
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 8,
-                    );
-                  },
-                  itemCount: 2)
+                  itemComparator: (item1, item2) =>
+                      item1['name']!.compareTo(item2['name']!),
+                  order: GroupedListOrder.ASC)
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
+          // ignore: prefer_const_constructors
           child: Icon(
             Icons.add,
             size: 30,
